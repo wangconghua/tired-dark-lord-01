@@ -106,15 +106,46 @@ def check_sting(text):
         raise ValueError("last line must carry the sting")
 
 
-def validate(text):
+def validate_structure(text):
+    """Gates: the file must be well-formed UTF-8 text in range."""
     check_is_text(text)
     check_not_blank(text)
     check_utf8(text)
     check_length(text)
+
+
+def validate_shape(text):
+    """Shape: about 100 words, spoken as one monologue."""
     check_word_count(text)
+
+
+def check_paragraph_breaks(text):
+    # A monologue spoken in beats: at least two blank-line breaks
+    # separate the approach, the scheme and the kneel.
+    if text.count("\n\n") < 2:
+        raise ValueError("entry must breathe in at least three beats")
+
+
+def check_em_dash_trailing_off(text):
+    # The trailing-off rhythm lives in the em dashes: the villain
+    # loses the thread mid-sentence at least twice.
+    if text.count("\u2014") < 2:
+        raise ValueError("entry must trail off on em dashes at least twice")
+
+
+def validate_voice(text):
+    """Voice: tiredness felt not announced, specific villain, sting last."""
     check_tiredness_shown_not_announced(text)
     check_villainy(text)
     check_sting(text)
+    check_paragraph_breaks(text)
+    check_em_dash_trailing_off(text)
+
+
+def validate(text):
+    validate_structure(text)
+    validate_shape(text)
+    validate_voice(text)
 
 
 def main():
